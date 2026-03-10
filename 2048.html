@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2048 Game</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 400px; margin: 50px auto; }
+        .tile { width: 90px; height: 90px; display: flex; justify-content: center; align-items: center; font-size: 24px; color: white; }
+        .tile-2 { background-color: #eee4da; }
+        .tile-4 { background-color: #ede0c8; }
+        .tile-8 { background-color: #f2b179; }
+        .tile-16 { background-color: #f59563; }
+        .tile-32 { background-color: #f67c5f; }
+        .tile-64 { background-color: #f67c5f; }
+        .tile-128 { background-color: #edcf72; }
+        .tile-256 { background-color: #edcc61; }
+        .tile-512 { background-color: #edc850; }
+        .tile-1024 { background-color: #edc53f; }
+        .tile-2048 { background-color: #edc22e; }
+        #score { text-align: center; font-size: 24px; }
+    </style>
+</head>
+<body>
+
+<div id="score">Score: 0</div>
+<div class="grid" id="grid"></div>
+
+<script>
+    let grid = [];
+    let score = 0;
+
+    // Initialize the game grid
+    function init() {
+        grid = [...Array(4)].map(() => Array(4).fill(0));
+        spawn();
+        spawn();
+        draw();
+    }
+
+    // Spawn a new tile
+    function spawn() {
+        let emptyTiles = [];
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                if (grid[r][c] === 0) emptyTiles.push({ r, c });
+            }
+        }
+        if (emptyTiles.length) {
+            let { r, c } = emptyTiles[Math.floor(Math.random() * emptyTiles.length)];
+            grid[r][c] = Math.random() < 0.9 ? 2 : 4;
+        }
+    }
+
+    // Draw the grid and tiles
+    function draw() {
+        const gridElement = document.getElementById('grid');
+        gridElement.innerHTML = '';
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                const tile = document.createElement('div');
+                tile.classList.add('tile', 'tile-' + grid[r][c]);
+                if (grid[r][c] !== 0) tile.textContent = grid[r][c];
+                gridElement.appendChild(tile);
+            }
+        }
+        document.getElementById('score').textContent = 'Score: ' + score;
+    }
+
+    // Handle key events for movement
+    document.addEventListener('keydown', (event) => {
+        if (event.key.startsWith("Arrow")) {
+            move(event.key.replace("Arrow", "").toLowerCase());
+        }
+    });
+
+    // Move tiles based on direction
+    function move(direction) {
+        // Implement tile movement and merging logic here...
+
+        spawn();
+        draw();
+        if (isGameOver()) {
+            alert("Game Over!");
+            init();
+        }
+    }
+
+    // Check if the game is over
+    function isGameOver() {
+        // Implement game over logic here...
+        return false; // Placeholder
+    }
+
+    // Start the game
+    init();
+</script>
+
+</body>
+</html>
